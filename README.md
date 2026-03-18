@@ -139,6 +139,61 @@ To verify the AJAX endpoint works manually:
 
 ---
 
+## Testing
+
+The module ships with a PHPUnit test suite that covers the core PHP classes
+(`SecurityLog` and `SecurityBlocklist`) **without** requiring a live PrestaShop
+installation or a database.
+
+### Prerequisites
+
+- PHP ≥ 7.3
+- [Composer](https://getcomposer.org/)
+
+### Run the tests
+
+```bash
+# 1. Install dev dependencies (first time only)
+composer install
+
+# 2. Run the full test suite
+./vendor/bin/phpunit
+```
+
+Expected output:
+
+```
+PHPUnit 10.x by Sebastian Bergmann and contributors.
+
+...............                                                   15 / 15 (100%)
+
+Time: 00:00.010, Memory: 8.00 MB
+
+OK (15 tests, 38 assertions)
+```
+
+### How it works
+
+The test bootstrap (`tests/bootstrap.php`) provides a lightweight stub of
+PrestaShop's `Db` singleton so that the classes under test can be loaded and
+exercised without any framework bootstrap.  Queued return values are consumed
+in order by `getValue()`, `executeS()`, and `execute()`:
+
+```php
+Db::queueValue(3);      // next getValue()  call returns 3
+Db::queueRows([...]);   // next executeS()  call returns [...]
+Db::queueExecute(true); // next execute()   call returns true
+```
+
+### Test files
+
+| File | What it tests |
+|------|---------------|
+| `tests/SecurityLogTest.php` | `SecurityLog::getStats()` and `SecurityLog::getRealtimeData()` |
+| `tests/SecurityBlocklistTest.php` | `SecurityBlocklist::cleanExpired()` and `SecurityBlocklist::getBlockedIPs()` |
+
+---
+
 ## Security notes
 
 - The `ajax/realtime.php` endpoint validates the token with `hash_equals()` (timing-safe comparison).

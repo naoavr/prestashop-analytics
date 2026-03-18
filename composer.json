@@ -1,0 +1,15 @@
+{
+    "name": "naoavr/securityguard",
+    "description": "PrestaShop SecurityGuard Module – real-time security monitoring",
+    "type": "prestashop-module",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}
