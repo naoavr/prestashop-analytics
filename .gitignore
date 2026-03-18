@@ -1,0 +1,9 @@
+# Composer dependencies
+/vendor/
+
+# Generated Composer lock (committed so CI can reproduce exact versions)
+# composer.lock  ← do NOT ignore the lock file
+
+# PHPUnit cache
+.phpunit.cache/
+.phpunit.result.cache
